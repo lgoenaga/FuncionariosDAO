@@ -12,13 +12,11 @@ import java.sql.SQLException;
  *
  * @author SOPORTE
  */
-public class Conectar {
-
-    public static final String URL = "jdbc:sqlserver://;serverName=localhost\\IUDIGITAL;databaseName=RRHH-IUDIGITAL";
-    public static final String USER = "user=sa";
-    public static final String PASSWORD = "password=Lagp2022";    
-
-    public static final String strConexionDB = "jdbc:sqlserver://;serverName=localhost\\IUDIGITAL;databaseName=RRHH-IUDIGITAL;user=sa;password=Lagp2022;";
+public class Conectar {   
+    /**
+     *
+     */
+    public static final String STRCONEXIONDB = "jdbc:sqlserver://;serverName=localhost\\IUDIGITAL;databaseName=RRHH-IUDIGITAL;user=sa;password=Lagp2022;TrustServerCertificate=True;";
     
     /**
      *
@@ -27,7 +25,7 @@ public class Conectar {
      */
     public static Connection getConnection() throws SQLException {
         
-        return DriverManager.getConnection(strConexionDB);   
+        return DriverManager.getConnection(STRCONEXIONDB);   
         
     } 
 }

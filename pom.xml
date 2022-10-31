@@ -3,19 +3,38 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>IUDIGITAL</groupId>
     <artifactId>DAOAPP</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>V1</version>
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
             <groupId>com.microsoft.sqlserver</groupId>
             <artifactId>mssql-jdbc</artifactId>
-            <version>9.2.0.jre11</version>
-        </dependency>       
-    </dependencies>
+            <version>11.2.1.jre11</version>
+        </dependency>    
+    </dependencies>  
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <exec.mainClass>iudigital.daoapp.ViewFuncionario</exec.mainClass>
     </properties>
+    <build>
+  <plugins>
+    <plugin>
+      <!-- Build an executable JAR -->
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-jar-plugin</artifactId>
+      <version>3.1.0</version>
+      <configuration>
+        <archive>
+          <manifest>
+            <addClasspath>true</addClasspath>
+            <classpathPrefix>lib/</classpathPrefix>
+            <mainClass>iudigital.daoapp.ViewFuncionario</mainClass>
+          </manifest>
+        </archive>
+      </configuration>
+    </plugin>
+  </plugins>
+</build>
 </project>

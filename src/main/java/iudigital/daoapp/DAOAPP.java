@@ -259,6 +259,11 @@ public class DAOAPP {
     }
 }
 
+    /**
+     *
+     * @param args
+     * @throws ParseException
+     */
     public static void main(String[] args) throws ParseException {
         Scanner sc = new Scanner(System.in);
         int opcion;
