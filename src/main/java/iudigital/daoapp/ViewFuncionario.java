@@ -214,7 +214,7 @@ public class ViewFuncionario extends javax.swing.JFrame{
         jPanelCampos.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 200, -1, -1));
 
         jLabel8.setText("Fecha Nacimiento");
-        jPanelCampos.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 200, -1, -1));
+        jPanelCampos.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 200, -1, -1));
 
         jLabel9.setText("Ciudad");
         jPanelCampos.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 40, -1, -1));
