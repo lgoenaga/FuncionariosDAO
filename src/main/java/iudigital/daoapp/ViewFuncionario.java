@@ -19,7 +19,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -52,6 +55,14 @@ public class ViewFuncionario extends javax.swing.JFrame{
         modelo = new DefaultTableModel(null, titulos);
         tblfuncionarios.setModel(modelo);
         
+        SimpleDateFormat fecha = new SimpleDateFormat("yyyy-MM-dd");
+        String fechaActual = fecha.format(new Date());
+        try {
+            jDateFN.setDate(fecha.parse(fechaActual));
+        } catch (ParseException ex) {
+            Logger.getLogger(ViewFuncionario.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         mostrarDatosTabla();
         llenarEstadoCivil();
         llenarSexo();
@@ -60,6 +71,7 @@ public class ViewFuncionario extends javax.swing.JFrame{
         txtidestadocivil.setVisible(false);
         txtidsexo.setVisible(false);
         txtidciudad.setVisible(false);
+        txtfechanacimiento.setVisible(false);
     }
     
     /**
@@ -88,7 +100,6 @@ public class ViewFuncionario extends javax.swing.JFrame{
         txtapellidos = new javax.swing.JTextField();
         txtcelular = new javax.swing.JTextField();
         txtdireccion = new javax.swing.JTextField();
-        txtfechanacimiento = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -110,6 +121,8 @@ public class ViewFuncionario extends javax.swing.JFrame{
         lblvalidarsexo = new javax.swing.JLabel();
         lblvalidarfechanacimiento = new javax.swing.JLabel();
         lblvalidardireccion = new javax.swing.JLabel();
+        jDateFN = new com.toedter.calendar.JDateChooser();
+        txtfechanacimiento = new javax.swing.JTextField();
 
         setTitle("INFORMACIÓN DE FUNCIONARIO");
         setName("framePpal"); // NOI18N
@@ -167,13 +180,13 @@ public class ViewFuncionario extends javax.swing.JFrame{
             }
         });
         getContentPane().add(btnborrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 410, -1, -1));
-        getContentPane().add(txtidsexo, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 0, -1, -1));
+        getContentPane().add(txtidsexo, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 0, -1, -1));
         getContentPane().add(txtidestadocivil, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 0, -1, -1));
         getContentPane().add(txtidciudad, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 0, 72, -1));
 
         lbltitulo.setFont(new java.awt.Font("Segoe UI Black", 0, 24)); // NOI18N
-        lbltitulo.setText("INFORMACIO DE FUNCIONARIO");
-        getContentPane().add(lbltitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 50, -1, 55));
+        lbltitulo.setText("INFORMACION DE FUNCIONARIO");
+        getContentPane().add(lbltitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 40, -1, 55));
         lbltitulo.getAccessibleContext().setAccessibleName("lbltitulo");
 
         btncancelar.setText("Cancelar");
@@ -190,7 +203,6 @@ public class ViewFuncionario extends javax.swing.JFrame{
         jPanelCampos.add(txtapellidos, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 140, 382, -1));
         jPanelCampos.add(txtcelular, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 220, 155, -1));
         jPanelCampos.add(txtdireccion, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 220, 368, -1));
-        jPanelCampos.add(txtfechanacimiento, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 220, 159, -1));
 
         jLabel1.setText("Identificación");
         jPanelCampos.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 40, -1, -1));
@@ -261,7 +273,23 @@ public class ViewFuncionario extends javax.swing.JFrame{
         lblvalidardireccion.setText("Campo Requerido");
         jPanelCampos.add(lblvalidardireccion, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 250, 368, -1));
 
+        jDateFN.setDateFormatString("yyyy-MM-dd");
+        jDateFN.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jDateFNMousePressed(evt);
+            }
+        });
+        jDateFN.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
+                jDateFNInputMethodTextChanged(evt);
+            }
+        });
+        jPanelCampos.add(jDateFN, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 220, 160, -1));
+
         getContentPane().add(jPanelCampos, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 100, 900, 300));
+        getContentPane().add(txtfechanacimiento, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 0, 80, -1));
 
         pack();
         setLocationRelativeTo(null);
@@ -322,12 +350,13 @@ public class ViewFuncionario extends javax.swing.JFrame{
                 cbxsexo.setSelectedIndex(Integer.parseInt(txtidsexo.getText()));
                 cbxciudad.setSelectedIndex(Integer.parseInt(txtidciudad.getText()));
                 
+                SimpleDateFormat fecha = new SimpleDateFormat("yyyy-MM-dd");             
+                jDateFN.setDate(fecha.parse(txtfechanacimiento.getText()));               
+                
                 btnborrar.setEnabled(true);
                 btnactualizar.setEnabled(true);
                 txtidfuncionario.setEnabled(false);
 
-               
-               // cbxsexo.setSelectedIndex(Integer.parseInt(txtidsexo.getText()));
         }   
         } catch (NumberFormatException e) {
             System.out.println("Error : " + e);
@@ -350,6 +379,18 @@ public class ViewFuncionario extends javax.swing.JFrame{
         // TODO add your handling code here:
         limpiar();
     }//GEN-LAST:event_btncancelarActionPerformed
+
+    private void jDateFNMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jDateFNMousePressed
+        // TODO add your handling code here:
+        System.out.println("Fecha = " + jDateFN.getDate());
+        System.out.println("Fecha2 = " + jDateFN.getDate().getTime());
+    }//GEN-LAST:event_jDateFNMousePressed
+
+    private void jDateFNInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_jDateFNInputMethodTextChanged
+        // TODO add your handling code here:
+                System.out.println("Fecha = " + jDateFN.getDate());
+        System.out.println("Fecha2 = " + jDateFN.getDate().getTime());
+    }//GEN-LAST:event_jDateFNInputMethodTextChanged
 
 
     public ArrayList<Sexo> getSexo() throws SQLException{
@@ -546,6 +587,13 @@ public class ViewFuncionario extends javax.swing.JFrame{
         lblvalidarfechanacimiento.setVisible(false);
         lblvalidardireccion.setVisible(false);
         
+        SimpleDateFormat fecha = new SimpleDateFormat("yyyy-MM-dd");
+        String fechaActual = fecha.format(new Date());
+        try {
+            jDateFN.setDate(fecha.parse(fechaActual));
+        } catch (ParseException ex) {
+            Logger.getLogger(ViewFuncionario.class.getName()).log(Level.SEVERE, null, ex);
+        }      
  }
     
     public Funcionario recuperarFuncionario(){
@@ -617,6 +665,10 @@ public class ViewFuncionario extends javax.swing.JFrame{
             {
                 lblvalidarciudad.setVisible(false);
             }    
+            
+            SimpleDateFormat fecha = new SimpleDateFormat("yyyy-MM-dd");
+            System.out.println("Fecha Recuperada" + String.valueOf(fecha.format(jDateFN.getDate())));
+            txtfechanacimiento.setText(String.valueOf(fecha.format(jDateFN.getDate())));
             objfuncionario.setFechanacimiento(txtfechanacimiento.getText());
             if (txtfechanacimiento.getText().isBlank()){
                 valido = false;
@@ -693,6 +745,7 @@ public class ViewFuncionario extends javax.swing.JFrame{
                         String id = funcionario.getIdfuncionario();
                         Funcionario encontrarFuncionario = funcionarioController.obtenerFuncionario(id);
                         if (encontrarFuncionario == null){
+
                             funcionarioController.crearFuncionario(funcionario);
                             this.mostrarDatosTabla();
                             JOptionPane.showMessageDialog(null, "Funcionario agregado correctamente");
@@ -794,6 +847,7 @@ public class ViewFuncionario extends javax.swing.JFrame{
     private javax.swing.JComboBox<Ciudad> cbxciudad;
     private javax.swing.JComboBox<EstadoCivil> cbxestadocivil;
     private javax.swing.JComboBox<Sexo> cbxsexo;
+    private com.toedter.calendar.JDateChooser jDateFN;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
